@@ -5,17 +5,12 @@ import FileBase from "react-file-base64";
 import { PostFormData } from "../../utils/types/posts";
 import { useMutation, useQueryClient } from "react-query";
 import useStyles from "./styles";
-import { API_URL } from "../../utils/api/api-client";
+import { createPost, updatePost } from "../../utils/api/api-client";
 import { Post as IPost } from "../../utils/types/posts";
 
 interface FormProps {
   currentId: string | null;
   setCurrentId: React.Dispatch<React.SetStateAction<string | null>>;
-}
-
-interface UpdatePostData {
-  id: string;
-  postData: PostFormData;
 }
 
 export const Form: FC<FormProps> = ({ currentId, setCurrentId }) => {
@@ -25,21 +20,31 @@ export const Form: FC<FormProps> = ({ currentId, setCurrentId }) => {
     creator: "",
     title: "",
     message: "",
-    tags: "",
+    tags: [""],
     selectedFile: "",
   });
 
+  const previousPosts = queryClient.getQueryData<IPost[]>("posts");
+  console.log("DATA", previousPosts);
+
+  // const postToUpdate =
+  //   currentId && previousPosts
+  //     ? previousPosts.find((post) => post._id === currentId)
+  //     : null;
+
   useEffect(() => {
-    if (currentId) {
-      const data = queryClient.getQueryData("posts");
-      console.log("DATA", data);
-      if (data) {
-        // @ts-ignore
-        const postToUpdate = data.find((post) => post._id === currentId);
-        console.log("POST TO UPDATE", postToUpdate);
-      }
+    if (currentId && previousPosts) {
+      const postToUpdate = previousPosts.find((post) => post._id === currentId);
+      if (postToUpdate)
+        setPostData({
+          creator: postToUpdate.creator,
+          title: postToUpdate.title,
+          message: postToUpdate.message,
+          tags: [...postToUpdate.tags],
+          selectedFile: postToUpdate.selectedFile,
+        });
     }
-  }, [currentId]);
+  }, [currentId, queryClient]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -47,22 +52,10 @@ export const Form: FC<FormProps> = ({ currentId, setCurrentId }) => {
     if (currentId) {
       updatePostMutation.mutate({ id: currentId, postData: postData });
     }
-
     // @ts-ignore
     createPostMutation.mutate({ ...postData });
-  };
 
-  const createPost = async (newPostData: PostFormData) => {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newPostData),
-    }).then((res) => res.json());
-
-    return res as IPost[];
+    clear();
   };
 
   const createPostMutation = useMutation(createPost, {
@@ -72,28 +65,23 @@ export const Form: FC<FormProps> = ({ currentId, setCurrentId }) => {
     },
   });
 
-  const updatePost = async (post: UpdatePostData) => {
-    const res = await fetch(`${API_URL}/${post.id}`, {
-      method: "PATCH",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(post.postData),
-    }).then((res) => res.json());
-
-    return res as IPost;
-  };
-
   const updatePostMutation = useMutation(updatePost, {
     onSuccess: () => {
       // Invalidate and refetch
-
       queryClient.invalidateQueries("posts");
     },
   });
 
-  const clear = () => {};
+  const clear = () => {
+    setCurrentId("");
+    setPostData({
+      creator: "",
+      title: "",
+      message: "",
+      tags: [""],
+      selectedFile: "",
+    });
+  };
   return (
     <Paper className={classes.paper}>
       <form
@@ -102,7 +90,9 @@ export const Form: FC<FormProps> = ({ currentId, setCurrentId }) => {
         className={`${classes.root} ${classes.form}`}
         onSubmit={handleSubmit}
       >
-        <Typography variant='h6'>Create a Memory</Typography>
+        <Typography variant='h6'>
+          {currentId ? "Edit a Memory" : "Create a Memory"}
+        </Typography>
         <TextField
           name='creator'
           variant='outlined'
@@ -137,7 +127,9 @@ export const Form: FC<FormProps> = ({ currentId, setCurrentId }) => {
           label='Tags'
           fullWidth
           value={postData.tags}
-          onChange={(e) => setPostData({ ...postData, tags: e.target.value })}
+          onChange={(e) =>
+            setPostData({ ...postData, tags: e.target.value.split(",") })
+          }
         />
         <div className={classes.fileInput}>
           <FileBase
