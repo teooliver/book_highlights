@@ -35,3 +35,25 @@ export const fetchPosts = async () => {
   const res = await fetch(API_URL).then((res) => res.json());
   return res as Post[];
 };
+
+export const deletePost = async (id: string) => {
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
+};
+
+export const likePost = async (id: string) => {
+  const res = await fetch(`${API_URL}/${id}/likePost`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
+
+  return res as Post;
+};

@@ -13,6 +13,8 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import moment from "moment";
 import useStyles from "./styles";
 import { Post as IPost } from "../../../utils/types/posts";
+import { useMutation, useQueryClient } from "react-query";
+import { deletePost, likePost } from "../../../utils/api/api-client";
 
 interface PostProps {
   post: IPost;
@@ -20,7 +22,22 @@ interface PostProps {
 }
 
 const Post: FC<PostProps> = ({ post, setCurrentId }) => {
+  const queryClient = useQueryClient();
   const classes = useStyles();
+
+  const deletePostMutation = useMutation(deletePost, {
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries("posts");
+    },
+  });
+
+  const likePostMutation = useMutation(likePost, {
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries("posts");
+    },
+  });
 
   return (
     <Card className={classes.card}>
@@ -70,7 +87,7 @@ const Post: FC<PostProps> = ({ post, setCurrentId }) => {
           size='small'
           color='primary'
           // onClick={() => dispatch(likePost(post._id))}
-          onClick={() => console.log("like post")}
+          onClick={() => likePostMutation.mutate(post._id)}
         >
           <ThumbUpAltIcon fontSize='small' /> Like {post.likeCount}
         </Button>
@@ -78,7 +95,7 @@ const Post: FC<PostProps> = ({ post, setCurrentId }) => {
           size='small'
           color='primary'
           // onClick={() => dispatch(deletePost(post._id))}
-          onClick={() => console.log("delete post")}
+          onClick={() => deletePostMutation.mutate(post._id)}
         >
           <DeleteIcon fontSize='small' /> Delete
         </Button>
