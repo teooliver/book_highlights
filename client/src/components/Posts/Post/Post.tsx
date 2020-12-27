@@ -91,7 +91,7 @@ const Post: FC<PostProps> = ({ post, setCurrentId }) => {
           // onClick={() => dispatch(likePost(post._id))}
           onClick={() => likePostMutation.mutate(post._id)}
         >
-          <ThumbUpAltIcon fontSize='small' /> Like {post.likeCount}
+          <ThumbUpAltIcon fontSize='small' /> &nbsp; Like {post.likeCount}
         </Button>
         <Button
           size='small'

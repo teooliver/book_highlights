@@ -52,9 +52,10 @@ export const Form: FC<FormProps> = ({ currentId, setCurrentId }) => {
 
     if (currentId) {
       updatePostMutation.mutate({ id: currentId, postData: postData });
+    } else {
+      // @ts-ignore
+      createPostMutation.mutate({ ...postData });
     }
-    // @ts-ignore
-    createPostMutation.mutate({ ...postData });
 
     clear();
   };
