@@ -9,7 +9,8 @@ function App() {
   const [currentId, setCurrentId] = useState<string | null>(null);
 
   return (
-    <Container maxWidth='lg'>
+    // <Container maxWidth={false}>
+    <div>
       <AppBar className={classes.appBar} position='static' color='inherit'>
         <Typography className={classes.heading} variant='h2' align='center'>
           Book Highlights
@@ -39,7 +40,8 @@ function App() {
           </Grid>
         </Container>
       </Grow>
-    </Container>
+      {/* </Container> */}
+    </div>
   );
 }
 

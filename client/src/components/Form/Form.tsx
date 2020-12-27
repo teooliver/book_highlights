@@ -118,6 +118,7 @@ export const Form: FC<FormProps> = ({ currentId, setCurrentId }) => {
           variant='outlined'
           label='Message'
           fullWidth
+          multiline
           value={postData.message}
           onChange={(e) =>
             setPostData({ ...postData, message: e.target.value })
