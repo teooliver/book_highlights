@@ -25,13 +25,6 @@ export const Form: FC<FormProps> = ({ currentId, setCurrentId }) => {
   });
 
   const previousPosts = queryClient.getQueryData<IPost[]>("posts");
-  console.log("DATA", previousPosts);
-  console.log(postData.creator);
-
-  // const postToUpdate =
-  //   currentId && previousPosts
-  //     ? previousPosts.find((post) => post._id === currentId)
-  //     : null;
 
   useEffect(() => {
     if (currentId && previousPosts) {
@@ -93,12 +86,12 @@ export const Form: FC<FormProps> = ({ currentId, setCurrentId }) => {
         onSubmit={handleSubmit}
       >
         <Typography variant='h6'>
-          {currentId ? "Edit a Memory" : "Create a Memory"}
+          {currentId ? "Edit a Book" : "Add a Book"}
         </Typography>
         <TextField
           name='creator'
           variant='outlined'
-          label='Creator'
+          label='Author'
           fullWidth
           value={postData.creator}
           onChange={(e) =>

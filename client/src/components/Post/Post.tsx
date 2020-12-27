@@ -12,9 +12,9 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import moment from "moment";
 import useStyles from "./styles";
-import { Post as IPost } from "../../../utils/types/posts";
+import { Post as IPost } from "../../utils/types/posts";
 import { useMutation, useQueryClient } from "react-query";
-import { deletePost, likePost } from "../../../utils/api/api-client";
+import { deletePost, likePost } from "../../utils/api/api-client";
 
 interface PostProps {
   post: IPost;
@@ -63,6 +63,7 @@ const Post: FC<PostProps> = ({ post, setCurrentId }) => {
           size='small'
           onClick={() => setCurrentId(post._id)}
         >
+          Edit
           <MoreHorizIcon fontSize='default' />
         </Button>
       </div>

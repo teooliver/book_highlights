@@ -1,16 +1,23 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme) => ({
-  appBar: {
+  nav: {
+    marginTop: "1rem",
     marginBottom: "2rem",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: "0.8rem",
   },
+  line: {
+    margin: "0 1rem",
+  },
+  // appBar: {
+  //   marginBottom: "2rem",
+  //   display: "flex",
+  //   flexDirection: "row",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   padding: "0.8rem",
+  // },
   heading: {
-    color: "black",
+    color: "white",
     fontSize: "2.5rem",
     fontWeight: "normal",
   },

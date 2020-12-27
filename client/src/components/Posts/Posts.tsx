@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { useQuery } from "react-query";
 import { API_URL, fetchPosts } from "../../utils/api/api-client";
 import { Post as IPost } from "../../utils/types/posts";
-import Post from "./Post/Post";
+import Post from "../Post/Post";
 import useStyles from "./styles";
 
 interface PostsProps {

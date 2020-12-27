@@ -13,17 +13,12 @@ function App() {
   return (
     // <Container maxWidth={false}>
     <div>
-      <AppBar className={classes.appBar} position='static' color='inherit'>
-        <Typography className={classes.heading} variant='h2' align='center'>
+      <nav className={classes.nav}>
+        <Typography className={classes.heading} variant='h1' align='center'>
           Book Highlights
         </Typography>
-        {/* <img
-          className={classes.image}
-          src={memories}
-          alt='memories'
-          height='60'
-        /> */}
-      </AppBar>
+        <hr className={classes.line} />
+      </nav>
       <Grow in>
         <Container>
           <Grid
