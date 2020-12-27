@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
-import { Post } from "../models/post.js";
+import { Post } from "../models/post";
+import { Request, Response } from "express";
 
-export const getPosts = async (req, res) => {
+export const getPosts = async (req: Request, res: Response) => {
   try {
     const postMessages = await Post.find();
 
@@ -11,7 +12,7 @@ export const getPosts = async (req, res) => {
   }
 };
 
-export const createPost = (req, res) => {
+export const createPost = (req: Request, res: Response) => {
   const post = req.body;
   console.log("Post", post);
   const newPost = new Post(post);
@@ -25,7 +26,7 @@ export const createPost = (req, res) => {
   }
 };
 
-export const updatePost = async (req, res) => {
+export const updatePost = async (req: Request, res: Response) => {
   const { id: _id } = req.params;
   const post = req.body;
 
@@ -39,7 +40,7 @@ export const updatePost = async (req, res) => {
   res.json(updatedPost);
 };
 
-export const deletePost = async (req, res) => {
+export const deletePost = async (req: Request, res: Response) => {
   const { id: _id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(_id.toString()))
@@ -50,23 +51,30 @@ export const deletePost = async (req, res) => {
   res.json({ message: "Post deleted successfully" });
 };
 
-export const likePost = async (req, res) => {
+export const likePost = async (req: Request, res: Response) => {
   const { id: _id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(_id.toString()))
     return res.status(404).send("No post with that id");
 
-  const post = await Post.findById(_id);
+  try {
+    const post = await Post.findById(_id);
 
-  const updatedPost = await Post.findByIdAndUpdate(
-    _id,
-    {
-      likeCount: post.likeCount + 1,
-    },
-    {
-      new: true,
+    if (!post) {
+      return;
     }
-  );
+    const updatedPost = await Post.findByIdAndUpdate(
+      _id,
+      {
+        likeCount: post.likeCount + 1,
+      },
+      {
+        new: true,
+      }
+    );
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 
   res.json({ message: "Like post success" });
 };
