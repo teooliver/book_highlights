@@ -26,6 +26,7 @@ export const Form: FC<FormProps> = ({ currentId, setCurrentId }) => {
 
   const previousPosts = queryClient.getQueryData<IPost[]>("posts");
   console.log("DATA", previousPosts);
+  console.log(postData.creator);
 
   // const postToUpdate =
   //   currentId && previousPosts

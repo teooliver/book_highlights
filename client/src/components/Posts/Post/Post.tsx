@@ -39,6 +39,8 @@ const Post: FC<PostProps> = ({ post, setCurrentId }) => {
     },
   });
 
+  console.log(post.creator);
+
   return (
     <Card className={classes.card}>
       <CardMedia
