@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Container, AppBar, Typography, Grow, Grid } from "@material-ui/core";
+
 import { Posts } from "./components/Posts/Posts";
 import { Form } from "./components/Form/Form";
+
 import useStyles from "./styles";
 
 function App() {
@@ -40,6 +42,7 @@ function App() {
           </Grid>
         </Container>
       </Grow>
+
       {/* </Container> */}
     </div>
   );
